@@ -101,6 +101,7 @@ VALUES ('Linux Fundamentals', 1, 78.5),
         14,
         76.2
     );
+<<<<<<< HEAD
 
 
 
@@ -152,3 +153,66 @@ VALUES ('Python Programming', 1, 85.2),
         18,
         91.4
     );
+-- QUERY 2: Find students who scored less than 50% in the Linux course
+
+-- Students with Linux grades below 50% using inner joins
+SELECT s.student_id, s.student_name, s.intake_year, lg.grade_obtained as linux_grade
+FROM students s
+    JOIN linux_grades lg ON s.student_id = lg.student_id
+WHERE
+    lg.grade_obtained < 50
+ORDER BY lg.grade_obtained ASC;
+
+-- QUERY 3: Find students who took only one course (either Linux or Python, not both)
+
+-- Students who took only Linux (not Python)
+SELECT s.student_id, s.student_name, s.intake_year, 'Linux Only' as course_taken
+FROM
+    students s
+    JOIN linux_grades lg ON s.student_id = lg.student_id
+    LEFT JOIN python_grades pg ON s.student_id = pg.student_id
+WHERE
+    pg.student_id IS NULL
+UNION
+
+-- Students who took only Python (not Linux)
+SELECT s.student_id, s.student_name, s.intake_year, 'Python Only' as course_taken
+FROM
+    students s
+    JOIN python_grades pg ON s.student_id = pg.student_id
+    LEFT JOIN linux_grades lg ON s.student_id = lg.student_id
+WHERE
+    lg.student_id IS NULL
+ORDER BY student_id;
+
+-- QUERY 4: Find students who took both courses
+
+-- Students who took both Linux and Python courses
+SELECT
+    s.student_id,
+    s.student_name,
+    s.intake_year,
+    lg.grade_obtained as linux_grade,
+    pg.grade_obtained as python_grade
+FROM
+    students s
+    JOIN linux_grades lg ON s.student_id = lg.student_id
+    JOIN python_grades pg ON s.student_id = pg.student_id
+ORDER BY s.student_id;
+
+-- QUERY 5: Calculate the average grade per course (Linux and Python separately)
+
+-- Average grade for Linux course
+SELECT
+    'Linux Fundamentals' as course_name,
+    ROUND(AVG(grade_obtained), 2) as average_grade, -- this calculates the average and rounds to two decimal places
+    COUNT(*) as total_students
+FROM linux_grades
+UNION
+
+-- Average grade for Python course
+SELECT
+    'Python Programming' as course_name,
+    ROUND(AVG(grade_obtained), 2) as average_grade,
+    COUNT(*) as total_students
+FROM python_grades;
