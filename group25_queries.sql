@@ -216,3 +216,63 @@ SELECT
     ROUND(AVG(grade_obtained), 2) as average_grade,
     COUNT(*) as total_students
 FROM python_grades;
+
+-- =========================================================================
+-- QUERY 6: Identify the top-performing student across both courses
+-- =========================================================================
+
+-- Top-performing student based on average of their grades across both courses
+SELECT
+    s.student_id,
+    s.student_name,
+    s.intake_year,
+    lg.grade_obtained as linux_grade,
+    pg.grade_obtained as python_grade,
+    ROUND(
+        (
+            lg.grade_obtained + pg.grade_obtained
+        ) / 2,
+        2
+    ) as average_grade
+FROM
+    students s
+    JOIN linux_grades lg ON s.student_id = lg.student_id
+    JOIN python_grades pg ON s.student_id = pg.student_id
+ORDER BY average_grade DESC
+LIMIT 1;
+
+-- =========================================================================
+-- ADDITIONAL USEFUL QUERIES
+-- =========================================================================
+
+-- Summary statistics for all students
+SELECT 'Total Students' as metric, COUNT(*) as count
+FROM students
+UNION
+SELECT 'Students in Linux Course' as metric, COUNT(*) as count
+FROM linux_grades
+UNION
+SELECT 'Students in Python Course' as metric, COUNT(*) as count
+FROM python_grades
+UNION
+SELECT 'Students in Both Courses' as metric, COUNT(*) as count
+FROM (
+        SELECT s.student_id
+        FROM
+            students s
+            JOIN linux_grades lg ON s.student_id = lg.student_id
+            JOIN python_grades pg ON s.student_id = pg.student_id
+    ) as both_courses;
+
+-- View all data for verification
+SELECT '=== STUDENTS TABLE ===' as info;
+
+SELECT * FROM students ORDER BY student_id;
+
+SELECT '=== LINUX GRADES TABLE ===' as info;
+
+SELECT * FROM linux_grades ORDER BY student_id;
+
+SELECT '=== PYTHON GRADES TABLE ===' as info;
+
+SELECT * FROM python_grades ORDER BY student_id;
