@@ -101,3 +101,54 @@ VALUES ('Linux Fundamentals', 1, 78.5),
         14,
         76.2
     );
+
+
+
+-- Insert Python grades (mix of students, some took only Python, some took both)
+INSERT INTO
+    python_grades (
+        course_name,
+        student_id,
+        grade_obtained
+    )
+VALUES ('Python Programming', 1, 85.2),
+    ('Python Programming', 3, 79.6),
+    ('Python Programming', 5, 88.4),
+    ('Python Programming', 6, 72.1),
+    ('Python Programming', 8, 92.3),
+    ('Python Programming', 9, 68.7),
+    (
+        'Python Programming',
+        10,
+        81.5
+    ),
+    (
+        'Python Programming',
+        12,
+        94.8
+    ),
+    (
+        'Python Programming',
+        14,
+        87.9
+    ),
+    (
+        'Python Programming',
+        15,
+        76.3
+    ),
+    (
+        'Python Programming',
+        16,
+        69.8
+    ),
+    (
+        'Python Programming',
+        17,
+        83.6
+    ),
+    (
+        'Python Programming',
+        18,
+        91.4
+    );
